@@ -1,28 +1,35 @@
 # Web-Service-with-rsosh-olympiads
-Чтобы начать работу нужно последовательно выполнить данные команды:
+Чтобы начать работу нужно последовательно выполнить данные шаги:
+
+Cоздаем локальную копию репозитория
 ```bash
-git clone https://github.com/Neriann/Web-Service-with-rsosh-olympiads.git # создаем локальную копию репозитория
+git clone https://github.com/Neriann/Web-Service-with-rsosh-olympiads.git
 ```
 
+Переименовываем рабочую директорию
 ```bash
-mv Web-Service-with-rsosh-olympiads rsosh # переименовываем рабочую директорию
+mv Web-Service-with-rsosh-olympiads rsosh
 ```
 
+Создаем докер образ
 ```bash
 cd rsosh
-docker build -t rsosh-wrapper # создаем докер образ
+docker build -t rsosh-wrapper
 ```
 
+Запускаем контейнер в фоновом режиме
 ```bash
-docker run -d --name rsosh-app -p 8000:8000 rsosh-wrapper # запускаем контейнер в фоновом режиме
+docker run -d --name rsosh-app -p 8000:8000 rsosh-wrapper
 ```
 
+Заходим в контейнер в интерактивном режиме
 ```bash
-docker exec -it rsosh-app bash # заходим в контейнер в интерактивном режиме
+docker exec -it rsosh-app bash
 ```
 
+Чтобы выйти из контейнера пишем
 ```bash
-exit # чтобы выйти из контейнера
+exit
 ```
 
 Когда мы в контейнере можем запустить наш вебсервис локально с помощью uvicorn:
