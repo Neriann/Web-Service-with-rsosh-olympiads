@@ -14,7 +14,7 @@ mv Web-Service-with-rsosh-olympiads rsosh
 Создаем докер образ
 ```bash
 cd rsosh
-docker build -t rsosh-wrapper
+docker build -t rsosh-wrapper .
 ```
 
 Запускаем контейнер в фоновом режиме
