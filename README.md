@@ -10,7 +10,7 @@ mv Web-Service-with-rsosh-olympiads rsosh # переименовываем ра�
 
 ```bash
 cd rsosh
-docker build -t rsosh-wrapper # создаем докер образ
+docker build -t rsosh-wrapper . # создаем докер образ
 ```
 
 ```bash

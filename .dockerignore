@@ -1,3 +1,4 @@
+### Python / Backend ###
 # Игнорируем виртуальное окружение
 venv/
 .env/
@@ -16,3 +17,37 @@ __pycache__/
 build/
 dist/
 *.egg-info/
+
+### React / Frontend ###
+# Зависимости и кэш
+node_modules/
+.npm
+.yarn/
+.pnpm/
+.pnp.js
+
+# Артефакты сборки и разработки
+dist/
+build/
+.next/
+out/
+.svelte-kit/
+
+# Файлы окружения (кроме .env.production)
+.env*
+!.env.production
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Тесты и покрытие
+coverage/
+.nyc_output/
+
+# Настройки IDE и системные файлы
+.idea/
+.vscode/
+.DS_Store
