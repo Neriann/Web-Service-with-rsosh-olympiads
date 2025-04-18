@@ -221,3 +221,7 @@ coverage/
 # Другое
 *.log
 .svelte-kit
+.bash_history
+.gitconfig
+.lesshst
+.viminfo
