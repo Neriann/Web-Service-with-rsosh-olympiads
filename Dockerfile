@@ -1,7 +1,7 @@
-# Используем базовый образ Python с Node.js (чтобы не ставить Node отдельно)
+# Используем базовый образ Python с Node.js
 FROM python:3.13-slim
 
-# Устанавливаем uv и системные пакеты (включая Node.js для React)
+# Устанавливаем системные пакеты (включая Node.js для React)
 RUN apt-get update && \
     apt-get install -y locales vim nano curl wget git sqlite3 tree && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
@@ -15,15 +15,23 @@ RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
-# Копируем все из корня
+# Создаем пользователя appuser с динамическим UID/GID
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN groupadd -g ${GROUP_ID} appuser && \
+    useradd -u ${USER_ID} -g appuser -d /app -s /bin/bash appuser && \
+    mkdir -p /app && \
+    chown appuser:appuser /app
+
+# Копируем файлы с правильными правами
 WORKDIR /app
-COPY . .
+COPY --chown=appuser:appuser . .
 
 # Рабочая директория для бэкенда
 WORKDIR /app/backend
 
 # Создаём виртуальное окружение Python
-RUN uv venv /venv 
+RUN uv venv /venv && chown -R appuser:appuser /venv
 ENV PATH="/venv/bin:${PATH}"
 
 # Устанавливаем Python-зависимости
@@ -32,17 +40,19 @@ RUN uv pip install .
 # Рабочая директория для фронтенда
 WORKDIR /app/frontend
 
-# Устанавливаем зависимости React
-RUN npm install
+# Устанавливаем зависимости React и фиксим права
+RUN npm install && \
+    chown -R appuser:appuser /app/frontend/node_modules
 
 # Собираем фронтенд
-RUN npm run build
+RUN npm run build && \
+    chown -R appuser:appuser /app/frontend/build
 
 # Возвращаемся в корневую директорию
 WORKDIR /app
 
-# Для разработки (запускает FastAPI и React-сервер одновременно):
-# CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8000 & cd /app/frontend && npm start"]
+# Переключаемся на непривилегированного пользователя
+USER appuser
 
 # Команда для входа в контейнер
 CMD ["tail", "-f", "/dev/null"]
